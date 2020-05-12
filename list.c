@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "list.h"
 
@@ -98,13 +99,44 @@ int list_remove (list_t *list, struct list_elem *elem) {
 }
 
 void list_finit (list_t *list) {
-    //TODO
+    // Initialize temporary list element to search the list
+    struct list_elem *temp = NULL;
+    temp = list->first;
+
+    // Iterate through list from first to last and delete selected elements
+    while (temp != NULL) {
+        list_remove(list, temp);
+        temp = temp->next;
+    }
 }
 
 void list_print (list_t *list, void (*print_elem) (char *)) {
-    //TODO
+    int ctr = 1;
+
+    // Initialize temporary list element to iterate through the list
+    struct list_elem *temp = NULL;
+    if (list != NULL && list->first != NULL && list->last != NULL)
+        temp = list->first;
+
+    // Print data of list elements
+    while (temp != NULL) {
+        printf("%d", ctr++);
+        print_elem(temp->data);
+        temp = temp->next;
+    }
 }
 
 struct list_elem *list_find (list_t *list, char *data, int (*cmp_elem) (const char *, const char *)) {
-    //TODO
+    // Initialize temporary list element pointer to iterate through the list
+    struct list_elem *temp = NULL;
+    if (list != NULL && list->first != NULL && list->last != NULL)
+        temp = list->first;
+
+    // Return element if found
+    while (temp != NULL) {
+        if (cmp_elem(data, temp->data) == 0)
+            return temp;
+        temp = temp->next;
+    }
+    return NULL;
 }

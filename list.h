@@ -1,5 +1,3 @@
-list_t *list_init();
-
 struct list_elem {
     struct list_elem *next;
     struct list_elem *prev;
