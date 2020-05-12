@@ -1,19 +1,100 @@
+#include <stdlib.h>
+
 #include "list.h"
 
 list_t *list_init () {
-    //TODO
+    // Initialize list and allocate memory
+    list_t *list = NULL;
+    list = malloc(sizeof(list_t));
+
+    // If no memory is left, return NULL
+    if (list == NULL)
+        return NULL;
+
+    // Initialize list variables
+    list->first = NULL;
+    list->last = NULL;
+
+    // Return address of the list
+    return list;
 }
 
 struct list_elem *list_insert (list_t *list, char *data) {
-    //TODO
+    // Initialize list element and allocate memory
+    struct list_elem *elem = NULL;
+    elem = malloc(sizeof(struct list_elem));
+
+    // If no memory is left, return NULL
+    if (elem == NULL)
+        return NULL;
+
+    // Initialize elem variables
+    elem->data = data;
+    elem->next = list->first;
+    list->first = elem;
+    elem->prev = NULL;
+
+    // Return address of elem
+    return elem;
 }
 
 struct list_elem *list_append (list_t *list, char *data) {
-    //TODO
+    // Initialize list element and allocate memory
+    struct list_elem *elem = NULL;
+    elem = malloc(sizeof(struct list_elem));
+
+    // If no memory is left, return NULL
+    if (elem == NULL)
+        return NULL;
+
+    // Initialize elem variables
+    elem->data = data;
+    elem->next = NULL;
+    elem->prev = list->last;
+    list->last = elem;
+
+    // Return address of elem
+    return elem;
 }
 
 int list_remove (list_t *list, struct list_elem *elem) {
-    //TODO
+    // If list is empty, return -1
+    if (list == NULL || list->first == NULL || list->last == NULL)
+        return -1;
+    // If elem is the first element in the list
+    if (elem == list->first) {
+        list->first = elem->next;
+        list->first->prev = NULL;
+        free(elem);
+        return 0;
+    }
+    // If elem is the last element in the list
+    if (elem == list->last) {
+        list->last = elem->prev;
+        list->last->next = NULL;
+        free(elem);
+        return 0;
+    }
+
+    // If elem is between first and last element in the list
+    // Initialize temporary list element to search the list
+    struct list_elem *temp = NULL;
+    temp = list->first;
+
+    // Search list to from first to last to find the element to be deleted
+    while (temp != NULL) {
+        // If the element is found ...
+        if (temp == elem) {
+           elem->prev->next = elem->next;
+           elem->next->prev = elem->prev;
+           free(elem);
+           return 0;
+        }
+        // Iterate
+        temp = temp->next;
+    }
+    // Return -1 if element was not found
+    return -1;
 }
 
 void list_finit (list_t *list) {

@@ -2,7 +2,8 @@ list_t *list_init();
 
 struct list_elem {
     struct list_elem *next;
-    char	     *data;
+    struct list_elem *prev;
+    char *data;
 };
 
 typedef struct list {
